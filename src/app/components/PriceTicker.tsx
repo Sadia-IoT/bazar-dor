@@ -53,7 +53,7 @@ export default function PriceTicker() {
   const items = [...products, ...products];
 
   return (
-    <div className="overflow-hidden border-b border-[#e1e8e1] bg-white">
+    <div className="overflow-hidden border-b border-[#e1e8e1] bg-[#fafcfa]">
       <div className="ticker-track flex w-max items-center gap-7 py-3">
         {items.map((product, index) => (
           <div

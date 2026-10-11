@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import CategoryBar from "./CategoryBar";
 import { authClient } from "@/app/lib/auth-client";
 
 function getBanglaDate() {
@@ -121,8 +120,6 @@ return (
 </div>
 
   </nav>
-
-  <CategoryBar />
 </header>
 
 );

@@ -1,6 +1,6 @@
 "use client";
 
-import { API} from "@/app/lib/api";
+import { API } from "@/app/lib/api";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -63,8 +63,20 @@ export default function CategoryPage() {
 
   const [category, setCategory] = useState<Category | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
+  const [sortBy, setSortBy] = useState("default");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortBy === "low-high") {
+      return a.today - b.today;
+    }
+
+    if (sortBy === "high-low") {
+      return b.today - a.today;
+    }
+
+    return 0;
+  });
 
   useEffect(() => {
     async function loadCategory() {
@@ -149,6 +161,30 @@ export default function CategoryPage() {
                 মোট {toBanglaNumber(products.length)}টি পণ্য
               </p>
             </div>
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h2 className="text-lg font-bold text-gray-900">সব পণ্য</h2>
+
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="sort-products"
+                  className="text-sm font-medium text-gray-600"
+                >
+                  সাজান:
+                </label>
+
+                <select
+                  id="sort-products"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                 
+className="min-w-[200px] cursor-pointer rounded-lg border border-[#e1e8e1] bg-white px-4 py-3 text-sm font-medium text-gray-900 shadow-sm outline-none focus:border-[#047f39]"
+                >
+                  <option value="default">ডিফল্ট</option>
+                  <option value="low-high">দাম: কম থেকে বেশি</option>
+                  <option value="high-low">দাম: বেশি থেকে কম</option>
+                </select>
+              </div>
+            </div>
 
             {products.length === 0 ? (
               <p className="py-10 text-center text-gray-500">
@@ -156,7 +192,7 @@ export default function CategoryPage() {
               </p>
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {products.map((product) => (
+                {sortedProducts.map((product) => (
                   <article
                     key={product.id}
                     className="rounded-2xl border border-[#e1e8e1] bg-white p-5 transition hover:-translate-y-1 hover:shadow-md"
@@ -198,7 +234,7 @@ export default function CategoryPage() {
                     )}
 
                     <Link
-                      href={`/products/${product.id}`}
+                      href={`/product/${product.slug || product.id}`}
                       className="mt-4 block rounded-lg bg-[#047f39] px-4 py-3 text-center text-sm font-semibold text-white hover:bg-[#03652e]"
                     >
                       বিস্তারিত দেখুন →
