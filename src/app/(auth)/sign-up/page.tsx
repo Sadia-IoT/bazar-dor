@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/app/lib/auth-client";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function SignUp() {
   const router = useRouter();
@@ -156,13 +157,48 @@ export default function SignUp() {
         >
           {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "সাইন আপ"}
         </button>
+        
 
-        <p className="text-center text-sm text-gray-600">
-          আগে থেকেই অ্যাকাউন্ট আছে?{" "}
-          <a href="/sign-in" className="font-semibold text-[#047f39] hover:underline">
-            সাইন ইন করুন
-          </a>
-        </p>
+<div className="mt-5 grid grid-cols-2 gap-3">
+  <button
+    type="button"
+    onClick={() =>
+    authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    })
+  }
+    className="flex items-center justify-center gap-2 rounded-lg border border-[#e1e8e1] bg-white px-3 py-3 text-sm font-semibold text-gray-800 transition hover:border-[#047f39] hover:bg-[#f4f8f3]"
+  >
+  
+    Google দিয়ে চালিয়ে যান
+  </button>
+
+  <button
+    type="button"
+   onClick={() =>
+    authClient.signIn.social({
+      provider: "github",
+      callbackURL: "/",
+    })
+  }
+    className="flex items-center justify-center gap-2 rounded-lg border border-[#e1e8e1] bg-white px-3 py-3 text-sm font-semibold text-gray-800 transition hover:border-[#047f39] hover:bg-[#f4f8f3]"
+  >
+     
+    GitHub দিয়ে চালিয়ে যান
+  </button>
+</div>
+
+       
+<p className="mt-5 text-center text-sm text-gray-600">
+  আগে থেকেই অ্যাকাউন্ট আছে?{" "}
+  <Link
+    href="/sign-in"
+    className="font-semibold text-[#047f39] hover:underline"
+  >
+    সাইন ইন করুন
+  </Link>
+</p>
       </form>
     </main>
   );
